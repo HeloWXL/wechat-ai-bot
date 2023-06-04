@@ -13,6 +13,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.4.2</spring-boot.version>
     </properties>
+    <packaging>pom</packaging>
+    <modules>
+        <module>wechat-api</module>
+        <module>wechat-plugin-starter</module>
+        <module>wechat-start</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
