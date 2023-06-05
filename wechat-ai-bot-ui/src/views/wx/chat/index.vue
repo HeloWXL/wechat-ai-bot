@@ -38,7 +38,7 @@ export default {
      */
     initServer() {
       let that = this;
-      socket.ws_url = that.$wsServerUrl + '/' + this.$store.state.userId;
+      socket.ws_url = that.$wsServerUrl + '/Halo' ;
       // 设置连接成功时回调
       socket.successCallBack(() => {
         this.$message.success('连接成功')
@@ -46,7 +46,11 @@ export default {
       // 重写Socket中的消息接收方法
       socket.receive = (msg) => {
         msg = JSON.parse(msg.data);
-        this.$refs.chatMain.pushMsg(msg);
+        let data = {
+          type: 'robot',
+          content: msg.content
+        }
+        this.$refs.chatMain.pushMsg(data);
       };
       // 开始建立连接
       socket.init();
@@ -55,32 +59,38 @@ export default {
      * 发送消息
      */
     sendMsg(obj) {
-      let msgObj = {msgCont: obj.content}
+      socket.send(obj,()=>{
+        let msgObj = {content: obj.msg, type: 'my'}
         this.$refs.chatMain.pushMsg(msgObj);
         this.$refs.chatFooter.clearContent()
+      },error=>{
+        console.log(error);
+        this.$message.error('socket 出现未知异常,请查看控制台')
+      });
     }
   }
 }
 </script>
 
 <style scoped>
-.el-container{
+.el-container {
   width: 600px;
   margin: 0 auto;
 }
 
-.chat-container{
+.chat-container {
   width: 100%;
   background-color: #a8c3ee;
   border-radius: 10px;
   opacity: 0.8;
 }
 
-.main{
+.main {
   margin-top: 5px;
   padding: 5px;
 }
-.footer{
+
+.footer {
   padding: 5px;
 }
 </style>

@@ -1,39 +1,32 @@
 <template>
-  <div class="chat-main" id="scrollbar">
+  <div class="chat-main scroller">
     <div class="main-top">
       <span>
           <el-avatar :src="require('@/assets/wx.png')"></el-avatar>
           <span> 小小菜鸡 </span>
       </span>
-      <span style="float: right"><i class="el-icon-setting" style="font-size: 25px"></i></span>
+      <span style="float: right;line-height: 50px"><i class="el-icon-setting" style="font-size: 25px"></i></span>
     </div>
-    <div class="msg-list" v-for="(item,value) in msgList" :key="value">
-      <div v-if="item.type === 'other'" class="other chat-box">
-        <el-avatar size="medium" :src="require('@/assets/head.png')" class="left-head-img"></el-avatar>
-        <!--文本消息-->
-        <div class="other-msg">
+    <div id="scrollbar">
+      <div class="msg-list" v-for="(item,value) in msgList" :key="value">
+        <div v-if="item.type === 'robot'" class="other chat-box">
+          <el-avatar size="medium" :src="require('@/assets/wx.png')" class="left-head-img"></el-avatar>
           <!--文本消息-->
-          <div v-if="item.msgType === 1">{{ item.msgCont }}</div>
-          <!--图片消息-->
-          <img v-if="item.msgType === 2" :src="item.msgCont" class="msg-img">
-          <!--视频消息-->
-          <video v-if="item.msgType === 6" :src="item.msgCont" class="msg-video" controls autoplay
-                 playsinline></video>
+          <div class="other-msg">
+            <!--文本消息-->
+            <div>{{ item.content }}</div>
+          </div>
+        </div>
+        <div v-else class="my chat-box">
+          <div class="my-msg">
+            <!--文本消息-->
+            <div>{{ item.content }}</div>
+          </div>
+          <el-avatar size="medium" :src="require('@/assets/head.png')" class="right-head-img"></el-avatar>
         </div>
       </div>
-      <div v-else class="my chat-box">
-        <div class="my-msg">
-          <!--文本消息-->
-          <div v-if="item.msgType === 1">{{ item.msgCont }}</div>
-          <!--图片消息-->
-          <img v-if="item.msgType === 2" :src="item.msgCont" class="msg-img">
-          <!--视频消息-->
-          <video v-if="item.msgType === 6" :src="item.msgCont" class="msg-video" controls autoplay
-                 playsinline></video>
-        </div>
-        <el-avatar size="medium" :src="require('@/assets/head.png')" class="right-head-img"></el-avatar>
-      </div>
     </div>
+
   </div>
 </template>
 
@@ -77,12 +70,13 @@ export default {
 
 .right-head-img {
   position: relative;
-  top: 12px;
+  top: 5px;
+  float: right;
 }
 
 .left-head-img {
   position: relative;
-  top: 15px;
+  top: 42px;
 }
 
 .other {
@@ -93,7 +87,7 @@ export default {
 
 .other-msg, .my-msg {
   font-size: 12px;
-  margin-left: 5px;
+  margin-left: 40px;
   vertical-align: middle;
   background-color: #eff3f6;
   max-width: 80%;
@@ -139,16 +133,41 @@ export default {
   background: #ffffff;
 }
 
+#scrollbar{
+  margin-top: 60px;
+}
+
 .main-top {
+  position: fixed;
+  width: 575px;
   padding: 5px;
   height: 50px;
   border-bottom: 1px solid #eff3f6;
 }
 
-.main-top span{
+.main-top span {
   float: left;
   line-height: 40px;
   margin-left: 5px;
+}
+
+
+.scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background-color:transparent;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: rgb(147,147,153,0.5);
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
 }
 
 </style>

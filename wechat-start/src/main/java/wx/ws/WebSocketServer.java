@@ -38,12 +38,11 @@ public class WebSocketServer {
 
     private final WxApiService wxApiService = SpringUtils.getBean("wxApiService");
 
+
     /**
-     * @Description: 连接建立成功调用的方法，成功建立之后，将用户的userId 存储到redis
-     * @params: [session, userId]
-     * @return: void
-     * @Author: wangxianlin
-     * @Date: 2020/5/9 9:13 PM
+     * 连接建立成功调用的方法，成功建立之后，将用户的userId 存储到redis
+     * @param session
+     * @param userId
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") String userId) {
@@ -55,22 +54,23 @@ public class WebSocketServer {
     }
 
     /**
-     * @Description: 收到客户端消息后调用的方法, 调用API接口 发送消息到
-     * @params: [message, session]
-     * @return: void
-     * @Author: wangxianlin
-     * @Date: 2020/5/9 9:13 PM
+     * 收到客户端消息后调用的方法, 调用API接口 发送消息到
+     * @param message
      */
     @OnMessage
-    public void onMessage(String message)  {
-        JSONObject aiResp = wxApiService.aiChat(userId,message);
-        sendMessage(userId,aiResp.toJSONString());
+    public void onMessage(String message) {
+        JSONObject jsonObject = JSON.parseObject(message);
+        if (jsonObject.containsKey("msg")) {
+            String msg = jsonObject.getString("msg");
+            JSONObject aiResp = wxApiService.aiChat(userId, msg);
+            sendMessage(userId, aiResp.toJSONString());
+        }
     }
 
     /**
      * 实现服务器主动推送
      */
-    public static void sendMessage(String toUser, String message)  {
+    public static void sendMessage(String toUser, String message) {
         log.info("发送目标：[{}],消息内容：[{}]", toUser, message);
         Session session = webSocketMap.get(toUser).session;
         if (session != null && session.isOpen()) {
@@ -115,33 +115,23 @@ public class WebSocketServer {
     }
 
     /**
-     * @Description: 获取在线人数
-     * @params: []
-     * @return: int
-     * @Author: wangxianlin
-     * @Date: 2020/5/9 9:09 PM
+     * 获取在线人数
+     * @return
      */
     public static synchronized int getOnlineCount() {
         return onlineCount;
     }
 
     /**
-     * @Description: 在线人数+1
-     * @params: []
-     * @return: void
-     * @Author: wangxianlin
-     * @Date: 2020/5/9 9:09 PM
+     * 在线人数+1
      */
     public static synchronized void addOnlineCount() {
         WebSocketServer.onlineCount++;
     }
 
+
     /**
-     * @Description: 在线人数-1
-     * @params: []
-     * @return: void
-     * @Author: wangxianlin
-     * @Date: 2020/5/9 9:09 PM
+     * 在线人数-1
      */
     public static synchronized void subOnlineCount() {
         WebSocketServer.onlineCount--;
