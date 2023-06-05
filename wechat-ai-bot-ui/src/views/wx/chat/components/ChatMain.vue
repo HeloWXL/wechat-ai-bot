@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-main scroller">
+  <div class="chat-main scroller" id="scrollbar">
     <div class="main-top">
       <span>
           <el-avatar :src="require('@/assets/wx.png')"></el-avatar>
@@ -7,7 +7,7 @@
       </span>
       <span style="float: right;line-height: 50px"><i class="el-icon-setting" style="font-size: 25px"></i></span>
     </div>
-    <div id="scrollbar">
+    <div style="margin-top: 60px">
       <div class="msg-list" v-for="(item,value) in msgList" :key="value">
         <div v-if="item.type === 'robot'" class="other chat-box">
           <el-avatar size="medium" :src="require('@/assets/wx.png')" class="left-head-img"></el-avatar>
@@ -131,10 +131,6 @@ export default {
 .el-avatar {
   display: block;
   background: #ffffff;
-}
-
-#scrollbar{
-  margin-top: 60px;
 }
 
 .main-top {
