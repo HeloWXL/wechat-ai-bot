@@ -5,7 +5,7 @@
           <el-avatar :src="require('@/assets/wx.png')"></el-avatar>
           <span> 小小菜鸡 </span>
       </span>
-      <span style="float: right;line-height: 50px"><i class="el-icon-setting" style="font-size: 25px"></i></span>
+      <span style="float: right;line-height: 50px"><i class="el-icon-setting" style="font-size: 25px;cursor: pointer"></i></span>
     </div>
     <div style="margin-top: 60px">
       <div class="msg-list" v-for="(item,value) in msgList" :key="value">
